@@ -9,6 +9,28 @@ before_install:
 
 script:
 #makes sure the test completes without waiting for a terminal char 
-  - docker run -e CI=true daniel-mock/docker-react npm run test
+    - docker run -e CI=true daniel-mock/docker-react npm run test
+
+deploy:
+    provider: elasticbeanstalk
+    #region is specific to each user
+    
+    region: "us-east-2"
+    #name we chose when creating the application
+    
+    app: "docker-react"
+    #name of environment that was created with the application. Defaulted to DockerReact-env
+    
+    env: "DockerReact-env"
+    #.zip's all files from local machine, and creates a new os using the files zipped. Bucket_name is what the .zip file goes into
+    
+    bucket_name: "elasticbeanstalk-us-east-2-658165505605"
+    bucket_path: "docker-react"
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key:
+        secure: "$AWS_SECRET_KEY"
+
 
 
